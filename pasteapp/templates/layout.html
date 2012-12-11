@@ -4,6 +4,19 @@
     <title>Simple Code Sharing | {% block title %} {% endblock %}</title>
   </head>
   <body>
+    <div>
+      {% with flashes = get_flashed_messages() %}
+      {% if flashes %}
+      <ul>
+	{% for msg in flashes %}
+	<li>
+	  {{ msg }}
+	</li>
+	{% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
     {% block content %}
     {% endblock %}
   </body>
