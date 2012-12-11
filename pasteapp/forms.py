@@ -1,6 +1,6 @@
 from flask.ext.wtf import (
     Form, TextField, PasswordField, SubmitField, Required, Length,
-    ValidationError, EqualTo
+    ValidationError, EqualTo, TextAreaField, SelectField
 )
 
 class RegistrationForm(Form):
@@ -27,3 +27,35 @@ class LoginForm(Form):
     password = PasswordField('Password', validators = [
         Required(message='You must enter a password.')])
     submit = SubmitField('Login')
+
+class SnippetForm(Form):
+
+    title = TextField('Title', validators = [
+        Required(message='You must enter a title.')])
+    language = SelectField('Programming Language',
+                           choices=[
+                               ('bash', 'Bash'),
+                               ('c', 'C'),
+                               ('csharp', 'C#'),
+                               ('clj', 'Clojure'),
+                               ('cl', 'Common Lisp'),
+                               ('cpp', 'C++'),
+                               ('css', 'CSS'),
+                               ('erlang', 'Erlang'),
+                               ('go', 'Go'),
+                               ('haskell', 'Haskell'),
+                               ('html', 'HTML'),
+                               ('java', 'Java'),
+                               ('javascript', 'Javascript'),
+                               ('lua', 'Lua'),
+                               ('ocaml', 'OCaml'),
+                               ('perl', 'Perl'),
+                               ('php', 'PHP'),
+                               ('text', 'Plain Text'),
+                               ('python', 'Python'),
+                               ('ruby', 'Ruby'),
+                               ('scheme', 'Scheme'),
+                               ('sql', 'SQL')])
+    raw_content = TextAreaField('Source Code', validators = [
+        Required(message='You must enter some source code.')])
+    submit = SubmitField('Submit Snippet')
