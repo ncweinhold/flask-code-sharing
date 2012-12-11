@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block title %}New Snippet{% endblock %}
+{% block content %}
+<h1>Create New Snippet</h1>
+<form method='POST' action='/snippet/new'>
+  {{ form.hidden_tag() }}
+  {% if err %}
+  <div>
+    {{ err }}
+  </div>
+  {% endif %}
+  <div>
+    {{ form.title.label }} {{ form.title }}
+    {% if form.title.errors %}
+    <ul>
+      {% for error in form.title.errors %}
+      <li>
+	{{ error }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  <div>
+    {{ form.language.label }} {{ form.language }}
+  </div>
+  <div>
+    {{ form.raw_content.label }} {{ form.raw_content }}
+    {% if form.raw_content.errors %}
+    <ul>
+      {% for error in form.raw_content.errors %}
+      <li>
+	{{ error }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  <div>
+    {{ form.submit }}
+  </div>
+</form>
+{% endblock %}

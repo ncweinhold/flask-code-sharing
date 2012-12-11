@@ -3,18 +3,13 @@ from flask import (
     session
 )
 
-from pasteapp.forms import RegistrationForm, LoginForm
-from pasteapp.database import User, db_session
+from pasteapp.forms import RegistrationForm, LoginForm, SnippetForm
+from pasteapp.database import User, db_session, Snippet
 
 frontend = Blueprint('frontend', __name__)
 
-@frontend.route('/', methods=['GET', 'POST'])
+@frontend.route('/')
 def index():
-    """
-    The root of the application. This should render a template showing
-    a form so that the user can create a new anonymous paste, plus should
-    show a list of the 10 or so most recently created pastes.
-    """
     return render_template('index.html')
 
 @frontend.route('/register', methods=['GET', 'POST'])
@@ -70,13 +65,33 @@ def dashboard():
     else:
         return render_template('dashboard.html')
 
+@frontend.route('/snippet/new', methods=['GET', 'POST'])
+def new_snippet():
+    if 'user_id' not in session:
+        flash('You must log in first')
+        return redirect(url_for('frontend.login'))
+    form = SnippetForm()
+    if form.validate_on_submit():
+        snippet = Snippet(form.title.data,
+                          form.language.data,
+                          session['user_id'],
+                          form.raw_content.data)
+        db_session.add(snippet)
+        db_session.commit()
+        flash('The new snippet has been successfully created.')
+        return redirect(url_for('frontend.view_snippet', snippet_id=snippet.id))
+    return render_template('new_snippet.html', form=form)
+
 @frontend.route('/about')
 def about():
     return render_template('about.html')
 
-@frontend.route('/paste/<int:paste_id>')
-def view_paste(paste_id):
-    return render_template('view_paste.html')
+@frontend.route('/snippet/view/<int:snippet_id>')
+def view_snippet(snippet_id):
+    snippet = Snippet.query.filter(Snippet.id == snippet_id).first()
+    if not snippet:
+        return abort(404)
+    return render_template('view_snippet.html', snippet=snippet)
 
 def username_taken(username):
     return User.query.filter(User.username == username).first()

@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+{% block title %}{{ snippet.title }}{% endblock %}
+{% block content %}
+<h1>{{ snippet.title }}</h1>
+<p>Written using: {{ snippet.snippet_lang }}</p>
+{{ snippet.snippet_formatted|safe }}
+{% endblock %}

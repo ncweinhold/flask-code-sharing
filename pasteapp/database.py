@@ -61,10 +61,10 @@ class Snippet(Base):
     snippet_raw = Column(Text())
     snippet_formatted = Column(Text())
 
-    def __init__(self, title, snippet_lang, author, snippet_raw):
+    def __init__(self, title, snippet_lang, author_id, snippet_raw):
         self.title = title
         self.snippet_lang = snippet_lang
-        self.author = author
+        self.author_id = author_id
         self.snippet_raw = snippet_raw
         self.snippet_formatted = self.generate_formatted()
 

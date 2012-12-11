@@ -288,6 +288,11 @@ class SnippetTestCase(TestCase):
     def logout(self, redirect=True):
         return self.client.get('/logout', follow_redirects=redirect)
 
+    def test_create_snippet_not_logged_in(self):
+        msg = 'You must log in first'
+        rv = self.create_snippet('Scheme code', 'scheme', '(list 1 2 3)')
+        assert msg in rv.data
+
     def test_create_snippet_successfully(self):
         msg = 'The new snippet has been successfully created.'
         self.login('test_user', 'password')
