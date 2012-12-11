@@ -13,9 +13,24 @@
 	  <li>
 	    <a href='/'>Home</a>
 	  </li>
+	  {% if not session.user_id %}
 	  <li>
 	    <a href='/register'>Register</a>
 	  </li>
+	  <li>
+	    <a href='/login'>Login</a>
+	  </li>
+	  {% else %}
+	  <li>
+	    <a href='/dashboard'>Overview</a>
+	  </li>
+	  <li>
+	    <a href='/snippet/new'>New Snippet</a>
+	  </li>
+	  <li>
+	    <a href='/logout'>Logout</a>
+	  </li>
+	  {% endif %}
 	  <li>
 	    <a href='/about'>About</a>
 	  </li>
