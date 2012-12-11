@@ -266,14 +266,54 @@ class LoginPageTestCase(TestCase):
 
 class SnippetTestCase(TestCase):
 
-    def create_snippet(self):
+    def create_snippet(self, title, language, raw_content, redirect=True):
         """
         Helper function.
         """
-        pass
+        return self.client.post('/snippet/new', data={
+            'title': title,
+            'language': language,
+            'raw_content': raw_content
+        }, follow_redirects=redirect)
+
+    def login(self, username, password, redirect=True):
+        """
+        Helper method to make a login post request.
+        """
+        return self.client.post('/login', data={
+            'username': username,
+            'password': password
+        }, follow_redirects=redirect)
+
+    def logout(self, redirect=True):
+        return self.client.get('/logout', follow_redirects=redirect)
+
+    def test_create_snippet_successfully(self):
+        msg = 'The new snippet has been successfully created.'
+        self.login('test_user', 'password')
+        rv = self.create_snippet("Python Hello World", "python",
+                                 "print 'hello world'")
+        assert msg in rv.data
 
     def test_create_snippet_redirect(self):
-        pass
+        """
+        This test checks that after a snippet has been successfully created
+        the page is redirected to the url referring to the newly created
+        snippet.
+        """
+        self.login('test_user', 'password')
+        rv = self.create_snippet("Ruby Hello World", "ruby",
+                                 "puts 'Hello World'")
+        assert "Ruby Hello World" in rv.data
 
     def test_create_snippet_no_content(self):
-        pass
+        msg = 'You must enter some source code.'
+        self.login('test_user', 'password')
+        rv = self.create_snippet('No content', 'php', '')
+        assert msg in rv.data
+
+    def test_create_snippet_no_title(self):
+        msg = 'You must enter a title.'
+        self.login('test_user', 'password')
+        rv = self.create_snippet('', 'scheme', '(list 1 2 3)')
+        assert msg in rv.data
