@@ -1,0 +1,5 @@
+import os
+
+DEBUG = False
+DATABASE = os.environ['DATABASE_URL']
+SECRET_KEY = <SOME PRIVATE KEY SHOULD GO HERE>
