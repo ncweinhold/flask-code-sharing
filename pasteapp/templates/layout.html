@@ -2,22 +2,49 @@
 <html>
   <head>
     <title>Simple Code Sharing | {% block title %} {% endblock %}</title>
+    <link rel='stylesheet' href='/static/bootstrap.min.css' type='text/css'>
+    <link rel='stylesheet' href='/static/defaultsyntax.css' type='text/css'>
+    <link rel='stylesheet' href='/static/style.css' type='text/css'>
   </head>
   <body>
-    <div>
-      {% with flashes = get_flashed_messages() %}
-      {% if flashes %}
-      <ul>
-	{% for msg in flashes %}
-	<li>
-	  {{ msg }}
-	</li>
-	{% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
+    <div class='container-narrow'>
+      <div class='masthead'>
+	<ul class='nav nav-pills pull-right'>
+	  <li>
+	    <a href='/'>Home</a>
+	  </li>
+	  <li>
+	    <a href='/register'>Register</a>
+	  </li>
+	  <li>
+	    <a href='/about'>About</a>
+	  </li>
+	</ul>
+	<h3 class='muted'>Simple Code Snippets</h3>
+      </div>
+      <div>
+	{% with flashes = get_flashed_messages() %}
+	{% if flashes %}
+	<ul>
+	  {% for msg in flashes %}
+	  <li>
+	    {{ msg }}
+	  </li>
+	  {% endfor %}
+	</ul>
+	{% endif %}
+	{% endwith %}
+      </div>
+      <div class='content'>
+	{% block content %}
+	{% endblock %}
+      </div>
+      <div class='push'>
+      </div>
     </div>
-    {% block content %}
-    {% endblock %}
+    <div class='footer'>
+      <p>Created by <a href='http://www.nickweinhold.co.uk'>Nick Weinhold</a></p>
+      <p>&copy; Nick Weinhold 2012</p>
+    </div>
   </body>
 </html>
