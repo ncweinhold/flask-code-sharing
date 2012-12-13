@@ -1,6 +1,15 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h1>Simple Code Sharing</h1>
-<p>Use the form below to create a new code snippet without creating an account.</p>
-<p>Want to manage your code snippets easily? Create an account now.</p>
+<h3>Simple Code Snippets</h3>
+<p>Share code samples easily.</p>
+<p><a href='/register'>Register now</a> in order to start creating your code snippets.</p>
+<h4>Recently Created Snippets</h4>
+<ul class='snippets'>
+  {% for snippet in snippets %}
+  <li class='snippet'>
+    <p><a href="{{ url_for('frontend.view_snippet', snippet_id=snippet.id) }}">{{ snippet.title }}</a></p>
+    <p>Created on: {{ snippet.created_date.strftime('%Y-%m-%d') }}</p>
+  </li>
+  {% endfor %}
+</ul>
 {% endblock %}

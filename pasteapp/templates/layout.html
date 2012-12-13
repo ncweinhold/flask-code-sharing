@@ -37,9 +37,9 @@
 	</ul>
 	<h3 class='muted'>Simple Code Snippets</h3>
       </div>
-      <div>
-	{% with flashes = get_flashed_messages() %}
-	{% if flashes %}
+      {% with flashes = get_flashed_messages() %}
+      {% if flashes %}
+      <div class='flash'>
 	<ul>
 	  {% for msg in flashes %}
 	  <li>
@@ -47,9 +47,9 @@
 	  </li>
 	  {% endfor %}
 	</ul>
-	{% endif %}
-	{% endwith %}
       </div>
+      {% endif %}
+      {% endwith %}
       <div class='content'>
 	{% block content %}
 	{% endblock %}

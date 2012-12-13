@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-<h1>Login Now</h1>
+<h3>Login Now</h3>
 <form method='POST' action='/login'>
   {{ form.csrf_token }}
   {% if err %}
@@ -14,7 +14,7 @@
     {% if form.username.errors %}
     <ul>
       {% for error in form.username.errors %}
-      <li>
+      <li class='form_error'>
 	{{ error }}
       </li>
       {% endfor %}
@@ -26,7 +26,7 @@
     {% if form.password.errors %}
     <ul>
       {% for error in form.password.errors %}
-      <li>
+      <li class='form_error'>
 	{{ error }}
       </li>
       {% endfor %}

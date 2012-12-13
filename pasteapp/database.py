@@ -1,6 +1,5 @@
 from sqlalchemy import (
-    create_engine, Column, Integer, String, Text,
-    ForeignKey
+    create_engine, Column, Integer, String, Text, DateTime, ForeignKey
 )
 from sqlalchemy.orm import (
     scoped_session, sessionmaker, relationship, backref
@@ -13,6 +12,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
 
 import bcrypt
+import datetime
 
 db_engine = None
 db_session = scoped_session(sessionmaker(autoflush=True))
@@ -60,6 +60,7 @@ class Snippet(Base):
     author = relationship("User", backref=backref('snippets', order_by=id))
     snippet_raw = Column(Text())
     snippet_formatted = Column(Text())
+    created_date = Column(DateTime())
 
     def __init__(self, title, snippet_lang, author_id, snippet_raw):
         self.title = title
@@ -67,6 +68,7 @@ class Snippet(Base):
         self.author_id = author_id
         self.snippet_raw = snippet_raw
         self.snippet_formatted = self.generate_formatted()
+        self.created_date = datetime.datetime.now()
 
     def generate_formatted(self):
         lexer = None

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block title %}New Snippet{% endblock %}
 {% block content %}
-<h1>Create New Snippet</h1>
+<h3>Create New Snippet</h3>
 <form method='POST' action='/snippet/new'>
   {{ form.hidden_tag() }}
   {% if err %}
@@ -14,7 +14,7 @@
     {% if form.title.errors %}
     <ul>
       {% for error in form.title.errors %}
-      <li>
+      <li class='form_error'>
 	{{ error }}
       </li>
       {% endfor %}
@@ -29,7 +29,7 @@
     {% if form.raw_content.errors %}
     <ul>
       {% for error in form.raw_content.errors %}
-      <li>
+      <li class='form_error'>
 	{{ error }}
       </li>
       {% endfor %}

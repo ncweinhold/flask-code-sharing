@@ -10,7 +10,8 @@ frontend = Blueprint('frontend', __name__)
 
 @frontend.route('/')
 def index():
-    return render_template('index.html')
+    snippets = Snippet.query.order_by(Snippet.id.desc()).limit(20)
+    return render_template('index.html', snippets=snippets)
 
 @frontend.route('/register', methods=['GET', 'POST'])
 def register():
