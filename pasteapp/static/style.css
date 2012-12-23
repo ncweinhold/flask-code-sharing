@@ -43,3 +43,8 @@ html, body {
 ul {
     list-style: none;
 }
+
+textarea {
+    width: 900px;
+    max-width: 900px;
+}

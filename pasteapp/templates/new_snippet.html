@@ -25,7 +25,7 @@
     {{ form.language.label }} {{ form.language }}
   </div>
   <div>
-    {{ form.raw_content.label }} {{ form.raw_content }}
+    {{ form.raw_content.label }} {{ form.raw_content(rows=20, cols=120) }}
     {% if form.raw_content.errors %}
     <ul>
       {% for error in form.raw_content.errors %}
