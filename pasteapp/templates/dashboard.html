@@ -2,5 +2,31 @@
 {% block title %}User Dashboard{% endblock %}
 {% block content %}
 <h3>Your Overview</h3>
-<p>Your pastes:</p>
+<p>Total pastes: {{ pagination.results_total }}</p>
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in results %}
+    <tr>
+      <td>{{ result.id }}</td>
+      <td>{{ result.title }}</td>
+      <td><a href='{{ url_for("frontend.view_snippet", snippet_id=result.id) }}'>View</a></td>
+      <td></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if pagination.has_prev %}
+<a href='/dashboard/{{ pagination.page_num - 1 }}'>Previous</a>
+{% endif %}
+{% if pagination.has_next %}
+<a href='/dashboard/{{ pagination.page_num + 1 }}'>Next</a>
+{% endif %}
 {% endblock %}

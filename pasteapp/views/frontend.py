@@ -6,6 +6,30 @@ from flask import (
 from pasteapp.forms import RegistrationForm, LoginForm, SnippetForm
 from pasteapp.database import User, db_session, Snippet
 
+from math import ceil
+
+PER_PAGE = 10
+
+class Pagination(object):
+
+    def __init__(self, page_num, per_page, results_total):
+        self.page_num = page_num
+        self.per_page = per_page
+        self.results_total = results_total
+
+    @property
+    def pages(self):
+        return int(ceil(self.results_total / float(self.per_page)))
+
+    @property
+    def has_prev(self):
+        return self.page_num > 1
+
+    @property
+    def has_next(self):
+        return self.page_num < self.pages
+
+
 frontend = Blueprint('frontend', __name__)
 
 @frontend.route('/')
@@ -58,13 +82,19 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('frontend.index'))
 
-@frontend.route('/dashboard')
-def dashboard():
+@frontend.route('/dashboard', defaults={'page_num': 1})
+@frontend.route('/dashboard/<int:page_num>')
+def dashboard(page_num):
     if 'user_id' not in session:
         flash('You must log in first')
         return redirect(url_for('frontend.login'))
     else:
-        return render_template('dashboard.html')
+        count = Snippet.query.filter(Snippet.author_id == session['user_id']).count()
+        results = Snippet.query.filter(Snippet.author_id == session['user_id']).order_by(Snippet.id.desc()).limit(PER_PAGE).offset((page_num-1) * PER_PAGE).all()
+        if not results and page_num != 1:
+            abort(404)
+        pagination = Pagination(page_num, PER_PAGE, count)
+        return render_template('dashboard.html', pagination=pagination, results=results)
 
 @frontend.route('/snippet/new', methods=['GET', 'POST'])
 def new_snippet():
